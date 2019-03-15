@@ -12,7 +12,7 @@ interpolate_ops = load_library.load_op_library(
     resource_loader.get_path_to_datafile('_interpolate_ops.so'))
 
 
-def nn(xyz1, xyz2):
+def nearest_neighbors(xyz1, xyz2):
     '''
     Input:
         xyz1: (b,n,3) float32 array, unknown points
