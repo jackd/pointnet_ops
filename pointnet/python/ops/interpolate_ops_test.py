@@ -18,7 +18,7 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
-from interpolate_ops import interpolate
+from interpolate_ops import three_interpolate
 from interpolate_ops import three_nn
 import tensorflow as tf
 
