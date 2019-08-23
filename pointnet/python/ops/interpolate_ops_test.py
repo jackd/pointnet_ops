@@ -19,26 +19,28 @@ from __future__ import print_function
 
 import numpy as np
 from interpolate_ops import interpolate
-from interpolate_ops import nn
+from interpolate_ops import nearest_neighbors
 import tensorflow as tf
 
 
 class GroupPointTest(tf.test.TestCase):
 
-  def test_grad(self):
-    with self.test_session():
-      points = tf.constant(np.random.random((1,8,16)).astype('float32'))
-      # print points
-      xyz1 = tf.constant(np.random.random((1,128,3)).astype('float32'))
-      xyz2 = tf.constant(np.random.random((1,8,3)).astype('float32'))
-      dist, idx = nn(xyz1, xyz2)
-      weight = tf.ones_like(dist)/3.0
-      interpolated_points = interpolate(points, idx, weight)
-      # print interpolated_points
-      err = tf.test.compute_gradient_error(
-        points, (1,8,16), interpolated_points, (1,128,16))
-      # print err
-      self.assertLess(err, 1e-4)
+    def test_grad(self):
+        with self.test_session():
+            points = tf.constant(np.random.random((1, 8, 16)).astype('float32'))
+            # print points
+            xyz1 = tf.constant(np.random.random((1, 128, 3)).astype('float32'))
+            xyz2 = tf.constant(np.random.random((1, 8, 3)).astype('float32'))
+            dist, idx = nearest_neighbors(xyz1, xyz2)
+            weight = tf.ones_like(dist) / 3.0
+            interpolated_points = interpolate(points, idx, weight)
+            # print interpolated_points
+            err = tf.test.compute_gradient_error(points, (1, 8, 16),
+                                                 interpolated_points,
+                                                 (1, 128, 16))
+            # print err
+            self.assertLess(err, 1e-4)
 
-if __name__=='__main__':
-  tf.test.main()
+
+if __name__ == '__main__':
+    tf.test.main()
