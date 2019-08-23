@@ -12,7 +12,7 @@ interpolate_ops = load_library.load_op_library(
     resource_loader.get_path_to_datafile('_interpolate_ops.so'))
 
 
-def nearest_neighbors(xyz1, xyz2):
+def three_nn(xyz1, xyz2):
     '''
     Input:
         xyz1: (b,n,3) float32 array, unknown points
@@ -23,10 +23,11 @@ def nearest_neighbors(xyz1, xyz2):
     '''
     return interpolate_ops.three_nn(xyz1, xyz2)
 
+
 ops.NoGradient('ThreeNN')
 
 
-def interpolate(points, idx, weight):
+def three_interpolate(points, idx, weight):
     '''
     Input:
         points: (b,m,c) float32 array, known points
@@ -45,4 +46,5 @@ def _three_interpolate_grad(op, grad_out):
     weight = op.inputs[2]
     return [
         interpolate_ops.three_interpolate_grad(points, idx, weight, grad_out),
-        None, None]
+        None, None
+    ]
