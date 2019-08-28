@@ -80,4 +80,4 @@ pip_pkg: $(ALL_LIB)
 
 .PHONY: clean
 clean:
-	rm -f $(ALL_LIB) $(GROUP_CUDA) artifacts/*
+	rm -f $(ALL_LIB) $(GROUP_CUDA) $(SAMPLE_CUDA) artifacts/*
