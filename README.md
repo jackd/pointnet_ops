@@ -13,12 +13,18 @@ make pip_pkg
 pip install artifacts/pointnet_ops-<VERSION>.whl
 ```
 
+You will need `$CUDA_HOME` defined (generally `/usr/local/cuda`). You may also need to change `g++` version at the top of the make file. See [build configurations](https://www.tensorflow.org/install/source#tested_build_configurations) if you install tensorflow from `pip`.
+
 ## Usage
 
 ```python
-from pointnet import sample
-from pointnet import group
-from pointnet import interpolate
+from pointnet_ops import sample
+from pointnet_ops import group
+from pointnet_ops import interpolate
 
 ...
 ```
+
+## Alternative Implementations
+
+Note the `pointnet_ops.group.group_point` and ``pointnet_ops.interpolate.three_interpolate` can be implemented significantly more easily using base tensorflow operations. See [examples](examples).

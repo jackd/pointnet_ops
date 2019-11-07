@@ -1,1 +1,1 @@
-recursive-include pointnet/ *.so
+recursive-include pointnet_ops/ *.so

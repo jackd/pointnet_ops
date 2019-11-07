@@ -11,7 +11,7 @@ from tensorflow.python import array_ops
 from tensorflow.python import math_ops
 
 group_ops = load_library.load_op_library(
-   resource_loader.get_path_to_datafile('_group_ops.so'))
+    resource_loader.get_path_to_datafile('_group_ops.so'))
 
 
 def query_ball_point(radius, nsample, xyz1, xyz2):
@@ -29,6 +29,7 @@ def query_ball_point(radius, nsample, xyz1, xyz2):
     #return grouping_module.query_ball_point(radius, nsample, xyz1, xyz2)
     return group_ops.query_ball_point(xyz1, xyz2, radius, nsample)
 
+
 ops.NoGradient('QueryBallPoint')
 
 
@@ -44,6 +45,7 @@ def select_top_k(k, dist):
     '''
     return group_ops.selection_sort(dist, k)
 
+
 ops.NoGradient('SelectionSort')
 
 
@@ -58,6 +60,8 @@ def group_point(points, idx):
             sampled from points
     '''
     return group_ops.group_point(points, idx)
+
+
 @ops.RegisterGradient('GroupPoint')
 def _group_point_grad(op, grad_out):
     points = op.inputs[0]
@@ -79,10 +83,10 @@ def knn_point(k, xyz1, xyz2):
     n = xyz1.shape[1].value
     c = xyz1.shape[2].value
     m = xyz2.shape[1].value
-    xyz1 = array_ops.reshape(xyz1, (b,1,n,c))
-    xyz2 = array_ops.reshape(xyz2, (b,m,1,c))
-    dist = math_ops.reduce_sum(math_ops.squared_distance(xyz1, xyz2), -1)
+    xyz1 = array_ops.reshape(xyz1, (b, 1, n, c))
+    xyz2 = array_ops.reshape(xyz2, (b, m, 1, c))
+    dist = math_ops.reduce_sum(math_ops.squared_difference(xyz1, xyz2), -1)
     outi, out = select_top_k(k, dist)
-    idx = array_ops.slice(outi, [0,0,0], [-1,-1,k])
-    val = array_ops.slice(out, [0,0,0], [-1,-1,k])
+    idx = array_ops.slice(outi, [0, 0, 0], [-1, -1, k])
+    val = array_ops.slice(out, [0, 0, 0], [-1, -1, k])
     return val, idx
